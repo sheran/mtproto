@@ -3,14 +3,14 @@ package mtproto
 import (
 	"errors"
 	"fmt"
+	"log"
 	"math/rand"
 	"net"
 	"os"
 	"runtime"
+	"strings"
 	"sync"
 	"time"
-	"strings"
-	"log"
 )
 
 const (
@@ -25,8 +25,8 @@ var (
 )
 
 type MTProto struct {
-	appId			int64
-	appHash		string
+	appId     int64
+	appHash   string
 	addr      string
 	conn      *net.TCPConn
 	f         *os.File
@@ -99,12 +99,27 @@ func (m *MTProto) Connect() error {
 		m.conn, err = net.DialTCP("tcp", nil, tcpAddr)
 	} else {
 		idx := strings.LastIndex(m.addr, ":")
-		m.addr = fmt.Sprintf("%s:%s", m.addr[:idx], m.addr[idx+1:])
+		// m.addr = fmt.Sprintf("%s:%s", m.addr[:idx], m.addr[idx:idx+1])
+		// log.Printf("IPv6 Address after parsing: %s\n", m.addr)
+
+		host := m.addr[:idx]
+		port := m.addr[idx+1:]
+
+		log.Printf("Address: %s", host)
+		log.Printf("Port: %s", port)
+
+		if m.addr[0] == '[' {
+			m.addr = fmt.Sprintf("%s:%s", host, port)
+		} else {
+			m.addr = fmt.Sprintf("[%s]:%s", host, port)
+		}
+
 		tcpAddr, err = net.ResolveTCPAddr("tcp6", m.addr)
 		if err != nil {
 			log.Println("IPv6::", err.Error())
 			return err
 		}
+		log.Printf("IPv6 Address only: %s\n", tcpAddr.IP)
 
 		m.conn, err = net.DialTCP("tcp6", nil, tcpAddr)
 	}
@@ -204,7 +219,7 @@ func (m *MTProto) Disconnect() error {
 	return nil
 }
 
-func (m *MTProto) GetDcAddress (dcID int32) string {
+func (m *MTProto) GetDcAddress(dcID int32) string {
 	return m.dclist[dcID]
 }
 
