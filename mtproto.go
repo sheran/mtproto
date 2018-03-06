@@ -64,6 +64,7 @@ func NewMTProto(appId int64, appHash, authkeyfile, dcAddress string, debug int32
 	if dcAddress == "" {
 		dcAddress = "149.154.167.91:443"
 	}
+	log.Printf("DC Address is %s\n", dcAddress)
 
 	m.appId = appId
 	m.appHash = appHash
@@ -77,6 +78,7 @@ func NewMTProto(appId int64, appHash, authkeyfile, dcAddress string, debug int32
 	if err == nil {
 		m.encrypted = true
 	} else {
+		log.Printf("Addrs %#v\n", m.addr)
 		m.addr = dcAddress
 		m.encrypted = false
 	}
@@ -175,10 +177,16 @@ func (m *MTProto) Connect() error {
 	x = <-resp
 	switch x.(type) {
 	case TL_config:
-		m.dclist = make(map[int32]string, 5)
+		m.dclist = make(map[int32]string, len(x.(TL_config).Dc_options))
 		for _, v := range x.(TL_config).Dc_options {
 			v := v.(TL_dcOption)
-			m.dclist[v.Id] = fmt.Sprintf("%s:%d", v.Ip_address, v.Port)
+			log.Printf("DC[%d]-%d: %s\n", v.Flags, v.Id, v.Ip_address)
+			if strings.ToLower(os.Getenv("IPv6")) == "disable" {
+				if v.Flags != 1 {
+					m.dclist[v.Id] = fmt.Sprintf("%s:%d", v.Ip_address, v.Port)
+				}
+
+			}
 		}
 	default:
 		return fmt.Errorf("Got: %T", x)
@@ -224,6 +232,7 @@ func (m *MTProto) GetDcAddress(dcID int32) string {
 }
 
 func (m *MTProto) reconnect(newaddr string) error {
+	log.Printf("Reconnecting [%s]\n", newaddr)
 	var err error
 
 	// stop ping routine
