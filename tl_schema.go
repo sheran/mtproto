@@ -924,9 +924,9 @@ type TL_inputPhoto struct {
 }
 
 type TL_inputFileLocation struct {
-	Volume_id int64
-	Local_id  int32
-	Secret    int64
+	Volume_id int64 `json:"volume_id"`
+	Local_id  int32 `json:"local_id"`
+	Secret    int64 `json:"secret"`
 }
 
 type TL_inputAppEvent struct {
@@ -978,10 +978,10 @@ type TL_fileLocationUnavailable struct {
 }
 
 type TL_fileLocation struct {
-	Dc_id     int32
-	Volume_id int64
-	Local_id  int32
-	Secret    int64
+	Dc_id     int32 `json:"dc_id"`
+	Volume_id int64 `json:"volume_id"`
+	Local_id  int32 `json:"local_id"`
+	Secret    int64 `json:"secret"`
 }
 
 type TL_userEmpty struct {
@@ -992,9 +992,9 @@ type TL_userProfilePhotoEmpty struct {
 }
 
 type TL_userProfilePhoto struct {
-	Photo_id    int64
-	Photo_small TL // FileLocation
-	Photo_big   TL // FileLocation
+	Photo_id    int64 `json:"photo_id"`
+	Photo_small TL    `json:"photo_small"` // FileLocation
+	Photo_big   TL    `json:"photo_big"`   // FileLocation
 }
 
 type TL_userStatusEmpty struct {
@@ -1013,7 +1013,7 @@ type TL_chatEmpty struct {
 }
 
 type TL_chat struct {
-	Flags int32
+	Flags int32 `json:"flags"`
 	// Creator	bool // flags_0?true
 	// Kicked	bool // flags_1?true
 	// Left	bool // flags_2?true
@@ -1050,7 +1050,7 @@ type TL_chatParticipant struct {
 }
 
 type TL_chatParticipantsForbidden struct {
-	Flags            int32
+	Flags            int32 `json:"flags"`
 	Chat_id          int32
 	Self_participant TL // flags_0?ChatParticipant
 }
@@ -1074,7 +1074,7 @@ type TL_messageEmpty struct {
 }
 
 type TL_message struct {
-	Flags int32
+	Flags int32 `json:"flags"`
 	// Out	bool // flags_1?true
 	// Mentioned	bool // flags_4?true
 	// Media_unread	bool // flags_5?true
@@ -1097,7 +1097,7 @@ type TL_message struct {
 }
 
 type TL_messageService struct {
-	Flags int32
+	Flags int32 `json:"flags"`
 	// Out	bool // flags_1?true
 	// Mentioned	bool // flags_4?true
 	// Media_unread	bool // flags_5?true
@@ -1115,8 +1115,8 @@ type TL_messageMediaEmpty struct {
 }
 
 type TL_messageMediaPhoto struct {
-	Flags       int32
-	Photo       TL // flags_0?Photo
+	Flags       int32 `json:"flags"`
+	Photo       TL    // flags_0?Photo
 	Caption     string
 	Ttl_seconds int32
 }
@@ -1163,7 +1163,7 @@ type TL_messageActionChatDeleteUser struct {
 }
 
 type TL_dialog struct {
-	Flags int32
+	Flags int32 `json:"flags"`
 	// Pinned	bool // flags_2?true
 	Peer                  TL // Peer
 	Top_message           int32
@@ -1181,7 +1181,7 @@ type TL_photoEmpty struct {
 }
 
 type TL_photo struct {
-	Flags int32
+	Flags int32 `json:"flags"`
 	// Has_stickers	bool // flags_0?true
 	Id          int64
 	Access_hash int64
@@ -1222,7 +1222,7 @@ type TL_auth_checkedPhone struct {
 }
 
 type TL_auth_sentCode struct {
-	Flags int32
+	Flags int32 `json:"flags"`
 	// Phone_registered	bool // flags_0?true
 	_Type           TL // auth_SentCodeType
 	Phone_code_hash string
@@ -1231,7 +1231,7 @@ type TL_auth_sentCode struct {
 }
 
 type TL_auth_authorization struct {
-	Flags        int32
+	Flags        int32 `json:"flags"`
 	Tmp_sessions int32
 	User         TL // User
 }
@@ -1255,7 +1255,7 @@ type TL_inputNotifyAll struct {
 }
 
 type TL_inputPeerNotifySettings struct {
-	Flags int32
+	Flags int32 `json:"flags"`
 	// Show_previews	bool // flags_0?true
 	// Silent	bool // flags_1?true
 	Mute_until int32
@@ -1272,7 +1272,7 @@ type TL_peerNotifySettingsEmpty struct {
 }
 
 type TL_peerNotifySettings struct {
-	Flags int32
+	Flags int32 `json:"flags"`
 	// Show_previews	bool // flags_0?true
 	// Silent	bool // flags_1?true
 	Mute_until int32
@@ -1287,7 +1287,7 @@ type TL_wallPaper struct {
 }
 
 type TL_userFull struct {
-	Flags int32
+	Flags int32 `json:"flags"`
 	// Blocked	bool // flags_0?true
 	// Phone_calls_available	bool // flags_4?true
 	// Phone_calls_private	bool // flags_5?true
@@ -1512,7 +1512,7 @@ type TL_updatesTooLong struct {
 }
 
 type TL_updateShortMessage struct {
-	Flags int32
+	Flags int32 `json:"flags"`
 	// Out	bool // flags_1?true
 	// Mentioned	bool // flags_4?true
 	// Media_unread	bool // flags_5?true
@@ -1530,7 +1530,7 @@ type TL_updateShortMessage struct {
 }
 
 type TL_updateShortChatMessage struct {
-	Flags int32
+	Flags int32 `json:"flags"`
 	// Out	bool // flags_1?true
 	// Mentioned	bool // flags_4?true
 	// Media_unread	bool // flags_5?true
@@ -1582,7 +1582,7 @@ type TL_upload_file struct {
 }
 
 type TL_dcOption struct {
-	Flags int32
+	Flags int32 `json:"flags"`
 	// Ipv6	bool // flags_0?true
 	// Media_only	bool // flags_1?true
 	// Tcpo_only	bool // flags_2?true
@@ -1594,7 +1594,7 @@ type TL_dcOption struct {
 }
 
 type TL_config struct {
-	Flags int32
+	Flags int32 `json:"flags"`
 	// Phonecalls_enabled	bool // flags_1?true
 	Date                     int32
 	Expires                  int32
@@ -1840,9 +1840,9 @@ type TL_updateDcOptions struct {
 }
 
 type TL_inputMediaUploadedDocument struct {
-	Flags       int32
-	File        TL // InputFile
-	Thumb       TL // flags_2?InputFile
+	Flags       int32 `json:"flags"`
+	File        TL    // InputFile
+	Thumb       TL    // flags_2?InputFile
 	Mime_type   string
 	Attributes  []TL // DocumentAttribute
 	Caption     string
@@ -1851,15 +1851,15 @@ type TL_inputMediaUploadedDocument struct {
 }
 
 type TL_inputMediaDocument struct {
-	Flags       int32
-	Id          TL // InputDocument
+	Flags       int32 `json:"flags"`
+	Id          TL    // InputDocument
 	Caption     string
 	Ttl_seconds int32
 }
 
 type TL_messageMediaDocument struct {
-	Flags       int32
-	Document    TL // flags_0?Document
+	Flags       int32 `json:"flags"`
+	Document    TL    // flags_0?Document
 	Caption     string
 	Ttl_seconds int32
 }
@@ -1957,7 +1957,7 @@ type TL_sendMessageChooseContactAction struct {
 }
 
 type TL_updateServiceNotification struct {
-	Flags int32
+	Flags int32 `json:"flags"`
 	// Popup	bool // flags_0?true
 	Inbox_date int32
 	_Type      string
@@ -2054,7 +2054,7 @@ type TL_documentAttributeAnimated struct {
 }
 
 type TL_documentAttributeSticker struct {
-	Flags int32
+	Flags int32 `json:"flags"`
 	// Mask	bool // flags_1?true
 	Alt         string
 	Stickerset  TL // InputStickerSet
@@ -2062,7 +2062,7 @@ type TL_documentAttributeSticker struct {
 }
 
 type TL_documentAttributeVideo struct {
-	Flags int32
+	Flags int32 `json:"flags"`
 	// Round_message	bool // flags_0?true
 	Duration int32
 	W        int32
@@ -2070,7 +2070,7 @@ type TL_documentAttributeVideo struct {
 }
 
 type TL_documentAttributeAudio struct {
-	Flags int32
+	Flags int32 `json:"flags"`
 	// Voice	bool // flags_10?true
 	Duration  int32
 	Title     string
@@ -2163,7 +2163,7 @@ type TL_webPagePending struct {
 }
 
 type TL_webPage struct {
-	Flags        int32
+	Flags        int32 `json:"flags"`
 	Id           int64
 	Url          string
 	Display_url  string
@@ -2189,7 +2189,7 @@ type TL_messageMediaWebPage struct {
 
 type TL_authorization struct {
 	Hash           int64
-	Flags          int32
+	Flags          int32 `json:"flags"`
 	Device_model   string
 	Platform       string
 	System_version string
@@ -2322,18 +2322,18 @@ type TL_user struct {
 	// Restricted	bool // flags_18?true
 	// Min	bool // flags_20?true
 	// Bot_inline_geo	bool // flags_21?true
-	Id                     int32
-	Access_hash            int64
-	First_name             string
-	Last_name              string
-	Username               string
-	Phone                  string
-	Photo                  TL // flags_5?UserProfilePhoto
-	Status                 TL // flags_6?UserStatus
-	Bot_info_version       int32
-	Restriction_reason     string
-	Bot_inline_placeholder string
-	Lang_code              string
+	Id                     int32  `json:"id"`
+	Access_hash            int64  `json:"access_hash"`
+	First_name             string `json:"first_name"`
+	Last_name              string `json:"last_name"`
+	Username               string `json:"username"`
+	Phone                  string `json:"phone"`
+	Photo                  TL     `json:"photo"`  // flags_5?UserProfilePhoto
+	Status                 TL     `json:"status"` // flags_6?UserStatus
+	Bot_info_version       int32  `json:"bot_info_version"`
+	Restriction_reason     string `json:"restriction_reason"`
+	Bot_inline_placeholder string `json:"bot_inline_placeholder"`
+	Lang_code              string `json:"lang_code"`
 }
 
 type TL_botCommand struct {
@@ -10629,7 +10629,7 @@ func (e TL_messages_sendMessage) encode() []byte {
 	}
 	if len(e.Entities) > 0 {
 		x.Vector(e.Entities)
-  }
+	}
 	return x.buf
 }
 

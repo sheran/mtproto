@@ -1,46 +1,46 @@
 package mtproto
 
 type UserStatus struct {
-	Status    string
-	Online    bool
-	Timestamp int32
+	Status    string `json:"status"`
+	Online    bool   `json:"online"`
+	Timestamp int32  `json:"timestamp"`
 }
 type UserProfilePhoto struct {
-	ID         int64
-	PhotoSmall FileLocation
-	PhotoLarge FileLocation
+	ID         int64        `json:"id"`
+	PhotoSmall FileLocation `json:"photo_small"`
+	PhotoLarge FileLocation `json:"photo_large"`
 }
 type User struct {
-	Flags                UserFlags
-	ID                   int32
-	Username             string
-	FirstName            string
-	LastName             string
-	Phone                string
-	Photo                *UserProfilePhoto
-	Status               *UserStatus
-	Inactive             bool
-	Mutual               bool
-	Verified             bool
-	Restricted           bool
-	AccessHash           int64
-	BotInfoVersion       int32
-	BotInlinePlaceHolser string
-	RestrictionReason    string
-	TlUser	 						*TL_user
+	Flags                UserFlags         `json:"flags"`
+	ID                   int32             `json:"id"`
+	Username             string            `json:"username"`
+	FirstName            string            `json:"first_name"`
+	LastName             string            `json:"last_name"`
+	Phone                string            `json:"phone"`
+	Photo                *UserProfilePhoto `json:"photot"`
+	Status               *UserStatus       `json:"status"`
+	Inactive             bool              `json:"inactive"`
+	Mutual               bool              `json:"mutual"`
+	Verified             bool              `json:"verified"`
+	Restricted           bool              `json:"restricted"`
+	AccessHash           int64             `json:"access_hash"`
+	BotInfoVersion       int32             `json:"bot_info_version"`
+	BotInlinePlaceHolser string            `json:"bot_inline_placeholder"`
+	RestrictionReason    string            `json:"restriction_reason"`
+	TlUser               *TL_user          `json:"tl_user"`
 }
 type UserFlags struct {
-	Self           bool // flags_10?true
-	Contact        bool // flags_11?true
-	MutualContact  bool // flags_12?true
-	Deleted        bool // flags_13?true
-	Bot            bool // flags_14?true
-	BotChatHistory bool // flags_15?true
-	BotNochats     bool // flags_16?true
-	Verified       bool // flags_17?true
-	Restricted     bool // flags_18?true
-	Min            bool // flags_20?true
-	BotInlineGeo   bool // flags_21?true
+	Self           bool `json:"self"`             // flags_10?true
+	Contact        bool `json:"contact"`          // flags_11?true
+	MutualContact  bool `json:"mutual_contact"`   // flags_12?true
+	Deleted        bool `json:"deleted"`          // flags_13?true
+	Bot            bool `json:"bot"`              // flags_14?true
+	BotChatHistory bool `json:"bot_chat_history"` // flags_15?true
+	BotNochats     bool `json:"bot_no_chats"`     // flags_16?true
+	Verified       bool `json:"verified"`         // flags_17?true
+	Restricted     bool `json:"restricted"`       // flags_18?true
+	Min            bool `json:"min"`              // flags_20?true
+	BotInlineGeo   bool `json:"bot_inline_geo"`   // flags_21?true
 }
 
 func (f *UserFlags) loadFlags(flags int32) {

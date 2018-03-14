@@ -185,8 +185,8 @@ func (m *MTProto) Connect() error {
 				if v.Flags != 1 {
 					m.dclist[v.Id] = fmt.Sprintf("%s:%d", v.Ip_address, v.Port)
 				}
-
 			}
+			m.dclist[v.Id] = fmt.Sprintf("%s:%d", v.Ip_address, v.Port)
 		}
 	default:
 		return fmt.Errorf("Got: %T", x)

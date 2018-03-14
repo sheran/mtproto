@@ -1,18 +1,18 @@
 package mtproto
 
 import (
-	"log"
 	"fmt"
+	"log"
 )
 
 // Contact
 type Contact struct {
-	ClientID  int64
-	Firstname string
-	Lastname  string
-	Phone     string
-	UserID    int32
-	Mutual    bool
+	ClientID  int64  `json:"client_id"`
+	Firstname string `json:"first_name"`
+	Lastname  string `json:"last_name"`
+	Phone     string `json:"phone"`
+	UserID    int32  `json:"user_id"`
+	Mutual    bool   `json:"mutual"`
 }
 
 func (c *Contact) GetInputContact() TL {

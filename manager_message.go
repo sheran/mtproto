@@ -2,32 +2,32 @@ package mtproto
 
 import (
 	"fmt"
-	"reflect"
 	"log"
 	"math/rand"
+	"reflect"
 )
 
 type Message struct {
-	Flags         MessageFlags
-	Type          string
-	ID            int32
-	From          int32
-	To            *Peer
-	Date          int32
-	Body          string
-	MediaType     string
-	Action        *MessageAction
-	ForwardHeader *MessageForwardHeader
-	Entities      []MessageEntity
-	Views         int32
-	Media         interface{}
+	Flags         MessageFlags          `json:"flags"`
+	Type          string                `json:"type"`
+	ID            int32                 `json:"id"`
+	From          int32                 `json:"from"`
+	To            *Peer                 `json:"to"`
+	Date          int32                 `json:"date"`
+	Body          string                `json:"body"`
+	MediaType     string                `json:"media_type"`
+	Action        *MessageAction        `json:"action"`
+	ForwardHeader *MessageForwardHeader `json:"forward_header"`
+	Entities      []MessageEntity       `json:"entities"`
+	Views         int32                 `json:"views"`
+	Media         interface{}           `json:"media"`
 }
 type MessageFlags struct {
-	Out         bool // flags_1?true
-	Mentioned   bool // flags_4?true
-	MediaUnread bool // flags_5?true
-	Silent      bool // flags_13?true
-	Post        bool // flags_14?true
+	Out         bool `json:"out"`           // flags_1?true
+	Mentioned   bool `json:"mentioned"`     // flags_4?true
+	MediaUnread bool `json:"media_unheard"` // flags_5?true
+	Silent      bool `json:"silent"`        // flags_13?true
+	Post        bool `json:"post"`          // flags_14?true
 }
 
 func (f *MessageFlags) loadFlags(flags int32) {
@@ -49,49 +49,49 @@ func (f *MessageFlags) loadFlags(flags int32) {
 }
 
 type MessageAction struct {
-	Type      string
-	Title     string
-	ChatID    int32
-	ChannelID int32
-	GameID    int64
-	GameScore int32
-	UserID    int32
-	UserIDs   []int32
-	Photo     *Photo
+	Type      string  `json:"type"`
+	Title     string  `json:"title"`
+	ChatID    int32   `json:"chat_id"`
+	ChannelID int32   `json:"channel_id"`
+	GameID    int64   `json:"game_id"`
+	GameScore int32   `json:"game_score"`
+	UserID    int32   `json:"user_id"`
+	UserIDs   []int32 `json:"user_ids"`
+	Photo     *Photo  `json:"photo"`
 }
 type MessageEntity struct {
-	Type     string
-	Offset   int32
-	Length   int32
-	Url      string
-	language string
-	UserID   int32
+	Type     string `json:"type"`
+	Offset   int32  `json:"offset"`
+	Length   int32  `json:"length"`
+	Url      string `json:"url"`
+	language string `json:"language"`
+	UserID   int32  `json:"user_id"`
 }
 type MessageForwardHeader struct {
-	From        int32
-	Date        int32
-	ChannelID   int32
-	ChannelPost int32
-	Author      string
+	From        int32  `json:"from"`
+	Date        int32  `json:"date"`
+	ChannelID   int32  `json:"channel_id"`
+	ChannelPost int32  `json:"channel_post"`
+	Author      string `json:"author"`
 }
 type MessageMedia interface{}
 type MessageMediaPhoto struct {
-	Caption string
-	Photo   Photo
+	Caption string `json:"caption"`
+	Photo   Photo  `json:"photo"`
 }
 type MessageMediaContact struct {
-	Firstname string
-	Lastname  string
-	UserID    int32
-	Phone     string
+	Firstname string `json:"first_name"`
+	Lastname  string `json:"last_name"`
+	UserID    int32  `json:"user_id"`
+	Phone     string `json:"phone"`
 }
 type MessageMediaDocument struct {
-	Caption  string
-	Document Document
+	Caption  string   `json:"caption"`
+	Document Document `json:"document"`
 }
 type MessageReplyMarkup struct {
-
 }
+
 // NewMessage
 // input
 //	1. TL_message
@@ -292,7 +292,6 @@ func NewMessageMedia(input TL) interface{} {
 	return nil
 }
 
-
 func (m *MTProto) Messages_SendMessage(text string, peer TL, reply_to int32) (interface{}, error) {
 	resp := make(chan TL, 1)
 	m.queueSend <- packetToSend{
@@ -342,8 +341,8 @@ func (m *MTProto) Messages_GetHistory(inputPeer TL, limit, min_id, max_id int32)
 	resp := make(chan TL, 1)
 	m.queueSend <- packetToSend{
 		TL_messages_getHistory{
-			Peer:  inputPeer,
-			Limit: limit,
+			Peer:   inputPeer,
+			Limit:  limit,
 			Min_id: min_id,
 			Max_id: max_id,
 		},

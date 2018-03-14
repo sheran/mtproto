@@ -1,9 +1,9 @@
 package mtproto
 
 import (
+	"fmt"
 	"log"
 	"reflect"
-	"fmt"
 )
 
 const (
@@ -13,28 +13,28 @@ const (
 )
 
 type Channel struct {
-	_State            int
-	Flags             ChannelFlags
-	ID                int32
-	AccessHash        int64
-	Title             string
-	About             string
-	Username          string
-	Photo             TL // ChatPhoto
-	Date              int32
-	Version           int32
-	PinnedMessageID   int32
-	RestrictionReason string
-	AdminRights       ChannelAdminRights  // flags_14?ChannelAdminRights
-	BannedRights      ChannelBannedRights // flags_15?ChannelBannedRights
-	Counters          ChannelCounters
+	_State            int                 `json:"state"`
+	Flags             ChannelFlags        `json:"flags"`
+	ID                int32               `json:"id"`
+	AccessHash        int64               `json:"access_hash"`
+	Title             string              `json:"title"`
+	About             string              `json:"about"`
+	Username          string              `json:"username"`
+	Photo             TL                  `json:"photo"` // ChatPhoto
+	Date              int32               `json:"date"`
+	Version           int32               `json:"version"`
+	PinnedMessageID   int32               `json:"pinned_message_id"`
+	RestrictionReason string              `json:"restriction_reason"`
+	AdminRights       ChannelAdminRights  `json:"admin_rights"`  // flags_14?ChannelAdminRights
+	BannedRights      ChannelBannedRights `json:"banned_rights"` // flags_15?ChannelBannedRights
+	Counters          ChannelCounters     `json:"counters"`
 }
 type ChannelCounters struct {
-	Admins       int32
-	Kicked       int32
-	Banned       int32
-	Unread       int32
-	Participants int32
+	Admins       int32 `json:"admins"`
+	Kicked       int32 `json:"kicked"`
+	Banned       int32 `json:"banned"`
+	Unread       int32 `json:"unread"`
+	Participants int32 `json:"participants"`
 }
 
 func (ch *Channel) GetPeer() TL {
@@ -318,7 +318,7 @@ func (m *MTProto) Channels_JoinChannel(channelID int32, accessHash int64) {
 		log.Println(input.error_message, input.error_code)
 	default:
 
-		 log.Println(reflect.TypeOf(input))
+		log.Println(reflect.TypeOf(input))
 	}
 	return
 }
