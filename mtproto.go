@@ -64,8 +64,9 @@ func NewMTProto(appId int64, appHash, authkeyfile, dcAddress string, debug int32
 	if dcAddress == "" {
 		dcAddress = "149.154.167.91:443"
 	}
-	log.Printf("DC Address is %s\n", dcAddress)
-
+	if __debug&DEBUG_LEVEL_NETWORK != 0 {
+		log.Printf("DC Address is %s\n", dcAddress)
+	}
 	m.appId = appId
 	m.appHash = appHash
 
@@ -78,7 +79,9 @@ func NewMTProto(appId int64, appHash, authkeyfile, dcAddress string, debug int32
 	if err == nil {
 		m.encrypted = true
 	} else {
-		log.Printf("Addrs %#v\n", m.addr)
+		if __debug&DEBUG_LEVEL_NETWORK != 0 {
+			log.Printf("Addrs %#v\n", m.addr)
+		}
 		m.addr = dcAddress
 		m.encrypted = false
 	}
@@ -95,21 +98,22 @@ func (m *MTProto) Connect() error {
 	if strings.Count(m.addr, ":") <= 1 {
 		tcpAddr, err = net.ResolveTCPAddr("tcp", m.addr)
 		if err != nil {
-			log.Println("IPv4::", err.Error())
+			if __debug&DEBUG_LEVEL_NETWORK != 0 {
+				log.Println("IPv4::", err.Error())
+			}
 			return err
 		}
 		m.conn, err = net.DialTCP("tcp", nil, tcpAddr)
 	} else {
 		idx := strings.LastIndex(m.addr, ":")
-		// m.addr = fmt.Sprintf("%s:%s", m.addr[:idx], m.addr[idx:idx+1])
-		// log.Printf("IPv6 Address after parsing: %s\n", m.addr)
-
 		host := m.addr[:idx]
 		port := m.addr[idx+1:]
 
-		log.Printf("Address: %s", host)
-		log.Printf("Port: %s", port)
+		if __debug&DEBUG_LEVEL_NETWORK != 0 {
 
+			log.Printf("Address: %s", host)
+			log.Printf("Port: %s", port)
+		}
 		if m.addr[0] == '[' {
 			m.addr = fmt.Sprintf("%s:%s", host, port)
 		} else {
@@ -118,10 +122,13 @@ func (m *MTProto) Connect() error {
 
 		tcpAddr, err = net.ResolveTCPAddr("tcp6", m.addr)
 		if err != nil {
-			log.Println("IPv6::", err.Error())
+			if __debug&DEBUG_LEVEL_NETWORK != 0 {
+
+				log.Println("IPv6::", err.Error())
+			}
 			return err
 		}
-		log.Printf("IPv6 Address only: %s\n", tcpAddr.IP)
+		// log.Printf("IPv6 Address only: %s\n", tcpAddr.IP)
 
 		m.conn, err = net.DialTCP("tcp6", nil, tcpAddr)
 	}
@@ -180,13 +187,17 @@ func (m *MTProto) Connect() error {
 		m.dclist = make(map[int32]string, len(x.(TL_config).Dc_options))
 		for _, v := range x.(TL_config).Dc_options {
 			v := v.(TL_dcOption)
-			log.Printf("DC[%d]-%d: %s\n", v.Flags, v.Id, v.Ip_address)
+			if __debug&DEBUG_LEVEL_NETWORK != 0 {
+				log.Printf("DC[%d]-%d: %s\n", v.Flags, v.Id, v.Ip_address)
+			}
 			if strings.ToLower(os.Getenv("IPv6")) == "disable" {
 				if v.Flags != 1 {
 					m.dclist[v.Id] = fmt.Sprintf("%s:%d", v.Ip_address, v.Port)
 				}
+			} else {
+				m.dclist[v.Id] = fmt.Sprintf("%s:%d", v.Ip_address, v.Port)
 			}
-			m.dclist[v.Id] = fmt.Sprintf("%s:%d", v.Ip_address, v.Port)
+
 		}
 	default:
 		return fmt.Errorf("Got: %T", x)
